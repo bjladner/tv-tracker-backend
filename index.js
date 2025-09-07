@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const tvShows = require('./controllers/tvShows');
+const apiRoutes = require('./routes/apiRoutes');
 
 const app = express();
 
@@ -16,26 +16,11 @@ mongoose.connect('mongodb://127.0.0.1:27017/tvShows')
 // CREATE EXPRESS VIEWS AND ROUTES
 app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
+app.use('/api', apiRoutes)
 
 app.get('/', (req, res) => {
     res.send('Welcome to the TVshows API!');
 });
-
-// Create a new tvshow
-app.post('/tvshow', tvShows.createTvShow);
-
-// Read all tvshows
-app.get('/tvshows', tvShows.readTvShows);
-
-// Read a specific tvshow by ID
-app.get('/tvshow/:id', tvShows.readTvShow);
-
-// // Update a tvshow by ID
-app.put('/tvshow/:id', tvShows.updateTvShow);
-
-// Delete a tvshow by ID
-app.delete('/tvshow/:id', tvShows.deleteTvShow);
-
 
 // CREATE EXPRESS SERVER
 const port = process.env.PORT || 3010; // You can use environment variables for port configuration
