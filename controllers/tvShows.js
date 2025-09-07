@@ -62,7 +62,7 @@ module.exports.readTvShow = async (req,res) => {
     const show = await TvShow.findById(req.params.id)
     const showData = await axios.get(`${tvMazeAPI}/shows/${show.tvMazeID}`);
     await show.getNextEpisode(showData.data);
-    res.render('tvshow', { show });
+    res.json(show);
   } catch(error) {
     console.log(error);
   }
@@ -79,7 +79,7 @@ module.exports.tvShowResults = async (req,res) => {
     console.log(`Show name is: ${showName}`)
     const searchResults = await axios.get(`${tvMazeAPI}/search/shows?q=${showName}`)
     console.log(`Found ${searchResults.data.length} shows about ${showName}`);
-    res.render('results', {shows: searchResults.data});
+    res.json(searchResults.data);
   } catch(error) {
     console.log(error);
   }
