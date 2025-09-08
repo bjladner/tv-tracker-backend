@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors')
 const apiRoutes = require('./routes/apiRoutes');
 
 const app = express();
@@ -16,6 +17,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/tvShows')
 // CREATE EXPRESS VIEWS AND ROUTES
 app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
+app.use(cors())
 app.use('/api', apiRoutes)
 
 app.get('/', (req, res) => {

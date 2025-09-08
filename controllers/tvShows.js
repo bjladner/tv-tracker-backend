@@ -3,10 +3,9 @@ const TvShow = require('../models/tvShows');
 
 const tvMazeAPI = 'https://api.tvmaze.com';
 
-module.exports.createTvShow = async (req,res) => {
+module.exports.addTvShow = async (req,res) => {
   try {
-    const { id } = req.query;
-    const response = await axios.get(`${tvMazeAPI}/shows/${id}`);
+    const response = await axios.get(`${tvMazeAPI}/shows/${req.params.id}`);
     const newShowData = response.data;
     const newShow = new TvShow({
       title: newShowData.name,
@@ -75,7 +74,7 @@ module.exports.deleteTvShow = async (req,res) => {
 
 module.exports.tvShowResults = async (req,res) => {
   try {
-    const { showName } = req.query;
+    const showName = req.params.name;
     console.log(`Show name is: ${showName}`)
     const searchResults = await axios.get(`${tvMazeAPI}/search/shows?q=${showName}`)
     console.log(`Found ${searchResults.data.length} shows about ${showName}`);
