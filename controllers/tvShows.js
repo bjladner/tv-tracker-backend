@@ -24,6 +24,26 @@ module.exports.addTvShow = async (req,res) => {
   }
 }
 
+module.exports.addTvShowJson = async (req,res) => {
+  try {
+    const newShowData = req.body;
+    const newShow = new TvShow({
+      title: newShowData.name,
+      tvMazeID: newShowData.id
+    });
+    newShow.setSchedule(newShowData);
+    newShow.addPlatform(newShowData);
+    newShow.addImageLink(newShowData);
+    await newShow.getNextEpisode(newShowData);
+    console.log(newShow);
+    console.log(`Added  ${newShow.title} on ${newShow.platform}`);
+    newShow.save();  
+    res.status(201).json(newShow);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
 module.exports.updateTvShow = async (req,res) => {
   try {
     const show = await TvShow.findById(req.params.id);
@@ -69,7 +89,6 @@ module.exports.readTvShow = async (req,res) => {
 
 module.exports.deleteTvShow = async (req,res) => {
   await TvShow.findByIdAndDelete(req.params.id);
-  res.redirect('/tvshows')
 }
 
 module.exports.tvShowResults = async (req,res) => {

@@ -12,6 +12,9 @@ router.get('/tvshow/:id', tvShows.readTvShow);
 // Add a new tvshow
 router.post('/tvshow/:id', tvShows.addTvShow);
 
+// Add a new tvshow
+router.post('/tvshow', tvShows.addTvShowJson);
+
 // Update a tvshow by ID
 router.patch('/tvshow/:id', tvShows.updateTvShow);
 
