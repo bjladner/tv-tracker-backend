@@ -20,7 +20,7 @@ module.exports.addTvShow = async (req,res) => {
     newShow.save();  
     res.status(201).json(newShow);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 }
 
@@ -40,7 +40,7 @@ module.exports.addTvShowJson = async (req,res) => {
     newShow.save();  
     res.status(201).json(newShow);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 }
 
@@ -55,9 +55,9 @@ module.exports.updateTvShow = async (req,res) => {
     console.log(show);
     console.log(`Updated  ${show.title} on ${show.platform}`);
     show.save();  
-    res.status(201).json(show);
+    res.status(200).json(show);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 }
 
@@ -70,7 +70,7 @@ module.exports.readTvShows =  async (req, res) => {
     } else {
       tvShows = await TvShow.find({});
     }
-    res.json(tvShows);
+    res.status(200).json(tvShows);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -81,14 +81,20 @@ module.exports.readTvShow = async (req,res) => {
     const show = await TvShow.findById(req.params.id)
     const showData = await axios.get(`${tvMazeAPI}/shows/${show.tvMazeID}`);
     await show.getNextEpisode(showData.data);
-    res.json(show);
+    res.status(200).json(show);
   } catch(error) {
-    console.log(error);
+    res.status(500).json({ error: error.message });
   }
 }
 
 module.exports.deleteTvShow = async (req,res) => {
-  await TvShow.findByIdAndDelete(req.params.id);
+  try {
+    const result = await TvShow.findByIdAndDelete(req.params.id);
+    console.log(`Deleting TV Show #${req.params.id}`)
+    res.status(204).json({});
+  } catch(error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 
 module.exports.tvShowResults = async (req,res) => {
@@ -97,8 +103,8 @@ module.exports.tvShowResults = async (req,res) => {
     console.log(`Show name is: ${showName}`)
     const searchResults = await axios.get(`${tvMazeAPI}/search/shows?q=${showName}`)
     console.log(`Found ${searchResults.data.length} shows about ${showName}`);
-    res.json(searchResults.data);
+    res.status(200).json(searchResults.data);
   } catch(error) {
-    console.log(error);
+    res.status(500).json({ error: error.message });
   }
 }
