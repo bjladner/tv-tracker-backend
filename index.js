@@ -2,6 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
 const apiRoutes = require('./routes/apiRoutes');
+const dotenv = require('dotenv');
+
+dotenv.config();
+console.log(process.env); // remove this after you've confirmed it is working
 
 const app = express();
 
