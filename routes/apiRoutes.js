@@ -24,4 +24,9 @@ router.delete('/tvshow/:id', tvShows.deleteTvShow);
 // Search for a tvshow by name
 router.get('/search/:name', tvShows.tvShowResults);
 
+// Test route
+router.get('/', (req, res) => {
+    res.send('Welcome to the TVshows API!');
+});
+
 module.exports = router;

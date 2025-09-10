@@ -19,10 +19,6 @@ app.use(express.json());
 app.use(cors())
 app.use('/api', apiRoutes)
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the TVshows API!');
-});
-
 // CREATE EXPRESS SERVER
 const port = process.env.PORT || 3010; // You can use environment variables for port configuration
 app.listen(port, () => {
