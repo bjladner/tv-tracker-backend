@@ -13,10 +13,11 @@ const dbAddress = process.env.DB_ADDRESS || '127.0.0.1';
 const dbPort = process.env.DB_PORT || '27017';
 const dbName = process.env.DB_NAME || 'tvShows'; 
 const dbLocal = process.env.DB_LOCAL || true;
+var dbURL = '';
 if (dbLocal) {
-  const dbURL = `mongodb://${dbAddress}:${dbPort}/${dbName}`;
+  dbURL = `mongodb://${dbAddress}:${dbPort}/${dbName}`;
 } else {
-  const dbURL = `mongodb://${dbUsername}:${dbPassword}@${dbAddress}:${dbPort}/${dbName}`;
+  dbURL = `mongodb://${dbUsername}:${dbPassword}@${dbAddress}:${dbPort}/${dbName}`;
 }
 mongoose.connect(dbURL)
 .then(function () {
