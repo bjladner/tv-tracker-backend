@@ -19,6 +19,7 @@ const dbURL = (dbLocal) ?
 mongoose.connect(dbURL)
 .then(function () {
   console.log('DB Connection Open!');
+  console.log(dbURL);
 })
 .catch(function (error) {
   console.log(error);
