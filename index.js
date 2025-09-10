@@ -5,7 +5,6 @@ const apiRoutes = require('./routes/apiRoutes');
 const dotenv = require('dotenv');
 
 dotenv.config();
-console.log(process.env); // remove this after you've confirmed it is working
 
 const app = express();
 
@@ -17,7 +16,18 @@ const dbAddress = process.env.DB_ADDRESS || '127.0.0.1';
 const dbPort = process.env.DB_PORT || '27017';
 const dbName = process.env.DB_NAME || 'tvShows'; 
 const dbLocal = process.env.DB_LOCAL || true;
-console.log(process.env.DB_LOCAL)
+console.log(process.env.DB_LOCAL);
+console.log(dbLocal);
+console.log(process.env.DB_USERNAME);
+console.log(dbUsername);
+console.log(process.env.DB_PASSWORD);
+console.log(dbPassword);
+console.log(process.env.DB_ADDRESS);
+console.log(dbAddress);
+console.log(process.env.DB_PORT);
+console.log(dbPort);
+console.log(process.env.DB_NAME);
+console.log(dbName);
 const dbURL = (dbLocal) ? `mongodb://${dbAddress}:${dbPort}/${dbName}` : `mongodb://${dbUsername}:${dbPassword}@${dbAddress}:${dbPort}/${dbName}`;
 mongoose.connect(dbURL)
 .then(function () {
