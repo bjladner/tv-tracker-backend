@@ -16,6 +16,7 @@ const dbAddress = process.env.DB_ADDRESS || '127.0.0.1';
 const dbPort = process.env.DB_PORT || '27017';
 const dbName = process.env.DB_NAME || 'tvShows'; 
 const dbLocal = process.env.DB_LOCAL || true;
+//
 console.log(process.env.DB_LOCAL);
 console.log(dbLocal);
 console.log(process.env.DB_USERNAME);
@@ -28,15 +29,16 @@ console.log(process.env.DB_PORT);
 console.log(dbPort);
 console.log(process.env.DB_NAME);
 console.log(dbName);
-const dbURL = (dbLocal) ? `mongodb://${dbAddress}:${dbPort}/${dbName}` : `mongodb://${dbUsername}:${dbPassword}@${dbAddress}:${dbPort}/${dbName}`;
+const dbURL = (dbLocal === true) ? `mongodb://${dbAddress}:${dbPort}/${dbName}` : `mongodb://${dbUsername}:${dbPassword}@${dbAddress}:${dbPort}/${dbName}`;
 var dbURL2 = '';
-if (dbLocal) {
+if (dbLocal === true) {
   dbURL2 = `mongodb://${dbAddress}:${dbPort}/${dbName}`;
 } else {
   dbURL2 = `mongodb://${dbUsername}:${dbPassword}@${dbAddress}:${dbPort}/${dbName}`;
 }
 console.log(`dbURL = ${dbURL}`);
 console.log(`dbURL2 = ${dbURL2}`);
+//
 mongoose.connect(dbURL)
 .then(function () {
   console.log('DB Connection Open!');
