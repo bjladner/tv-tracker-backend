@@ -5,20 +5,28 @@ const tvMazeAPI = 'https://api.tvmaze.com';
 
 module.exports.addTvShow = async (req,res) => {
   try {
-    const response = await axios.get(`${tvMazeAPI}/shows/${req.params.id}`);
-    const newShowData = response.data;
-    const newShow = new TvShow({
-      title: newShowData.name,
-      tvMazeID: newShowData.id
-    });
-    newShow.setSchedule(newShowData);
-    newShow.addPlatform(newShowData);
-    newShow.addImageLink(newShowData);
-    await newShow.getNextEpisode(newShowData);
-    console.log(newShow);
-    console.log(`Added  ${newShow.title} on ${newShow.platform}`);
-    newShow.save();  
-    res.status(201).json(newShow);
+    console.log(`Looking for existing tv show with tvMazeId = ${req.params.id}`);
+    const show = await TvShow.findOne({ tvMazeID: req.params.id });
+    console.log(show);
+    if (!show) {
+      const response = await axios.get(`${tvMazeAPI}/shows/${req.params.id}`);
+      const newShowData = response.data;
+      const newShow = new TvShow({
+        title: newShowData.name,
+        tvMazeID: newShowData.id
+      });
+      newShow.setSchedule(newShowData);
+      newShow.addPlatform(newShowData);
+      newShow.addImageLink(newShowData);
+      await newShow.getNextEpisode(newShowData);
+      console.log(newShow);
+      console.log(`Added ${newShow.title} on ${newShow.platform}`);
+      newShow.save();  
+      res.status(201).json({status: "added"});
+    } else {
+      console.log(`${show.title} already exists in the database`);
+      res.status(201).json({status: "exists"});
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -26,19 +34,28 @@ module.exports.addTvShow = async (req,res) => {
 
 module.exports.addTvShowJson = async (req,res) => {
   try {
-    const newShowData = req.body;
-    const newShow = new TvShow({
-      title: newShowData.name,
-      tvMazeID: newShowData.id
-    });
-    newShow.setSchedule(newShowData);
-    newShow.addPlatform(newShowData);
-    newShow.addImageLink(newShowData);
-    await newShow.getNextEpisode(newShowData);
-    console.log(newShow);
-    console.log(`Added  ${newShow.title} on ${newShow.platform}`);
-    newShow.save();  
-    res.status(201).json(newShow);
+    console.log(`Looking for existing tv show with tvMazeId = ${req.body.id}`);
+    const show = await TvShow.findOne({ tvMazeID: req.body.id });
+    console.log(show);
+    if (!show) {
+      const newShowData = req.body;
+      const newShow = new TvShow({
+        title: newShowData.name,
+        tvMazeID: newShowData.id
+      });
+      newShow.setSchedule(newShowData);
+      newShow.addPlatform(newShowData);
+      newShow.addImageLink(newShowData);
+      await newShow.getNextEpisode(newShowData);
+      console.log(newShow);
+      console.log(`Added  ${newShow.title} on ${newShow.platform}`);
+      newShow.save();  
+      res.status(201).json(newShow);
+      res.status(201).json({status: "added"});
+    } else {
+      console.log(`${show.title} already exists in the database`);
+      res.status(201).json({status: "exists"});
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -55,7 +72,7 @@ module.exports.updateTvShow = async (req,res) => {
     console.log(show);
     console.log(`Updated  ${show.title} on ${show.platform}`);
     show.save();  
-    res.status(200).json(show);
+    res.status(201).json({status: "updated"});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
