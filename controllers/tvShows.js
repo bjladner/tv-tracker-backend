@@ -81,7 +81,7 @@ module.exports.updateTvShow = async (req,res) => {
 module.exports.readTvShows =  async (req, res) => {
   try {
     const { platform } = req.query;
-    var tvShows = null;
+    let tvShows = null;
     if (platform) {
       tvShows = await TvShow.find({platform});
     } else {
